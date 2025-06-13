@@ -41,6 +41,28 @@ const CreateDAO = () => {
     logo: null,
     logoPreview: "",
     votePrice: 1,
+    // New GitHub-specific fields
+    githubRepo: "",
+    tokenStrategy: "fixed", // 'fixed' or 'dynamic'
+    initialDistribution: {
+      commits: 10,
+      pullRequests: 50,
+      issues: 20,
+      codeReviews: 15,
+    },
+    tokenAllocation: {
+      initialDistribution: 60, // percentage of total tokens for initial distribution
+      futureContributors: 30, // percentage reserved for future contributors
+      treasury: 10, // percentage for DAO treasury
+    },
+    contributionRewards: {
+      newPR: 30,
+      acceptedPR: 50,
+      issueCreation: 20,
+      codeReview: 15,
+    },
+    vestingPeriod: 30,
+    minContributionForVoting: 100,
   });
 
   // Handle text input changes
@@ -272,25 +294,274 @@ const CreateDAO = () => {
               />
             </div>
 
+            <div className="p-4 glass-card rounded-lg">
+              <h4 className="text-lg font-semibold text-white mb-4">Token Supply Strategy</h4>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="tokenStrategy"
+                      value="fixed"
+                      checked={formData.tokenStrategy === "fixed"}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        tokenStrategy: e.target.value
+                      })}
+                      className="form-radio text-daoship-blue"
+                    />
+                    <span className="text-white">Fixed Supply</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="tokenStrategy"
+                      value="dynamic"
+                      checked={formData.tokenStrategy === "dynamic"}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        tokenStrategy: e.target.value
+                      })}
+                      className="form-radio text-daoship-blue"
+                    />
+                    <span className="text-white">Dynamic Supply</span>
+                  </label>
+                </div>
+
+                {formData.tokenStrategy === "fixed" ? (
+                  <div className="space-y-4">
+                    <GlassmorphicInput
+                      label="Total Token Supply"
+                      name="tokenSupply"
+                      type="number"
+                      value={formData.tokenSupply}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        tokenSupply: parseInt(e.target.value) || 0
+                      })}
+                      required
+                    />
+
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h5 className="text-white font-medium mb-2">Token Allocation</h5>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm text-white/70">Initial Distribution</label>
+                          <GlassmorphicSlider
+                            min={0}
+                            max={100}
+                            value={formData.tokenAllocation.initialDistribution}
+                            onChange={(value) => setFormData({
+                              ...formData,
+                              tokenAllocation: {
+                                ...formData.tokenAllocation,
+                                initialDistribution: value
+                              }
+                            })}
+                            unit="%"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-white/70">Future Contributors</label>
+                          <GlassmorphicSlider
+                            min={0}
+                            max={100}
+                            value={formData.tokenAllocation.futureContributors}
+                            onChange={(value) => setFormData({
+                              ...formData,
+                              tokenAllocation: {
+                                ...formData.tokenAllocation,
+                                futureContributors: value
+                              }
+                            })}
+                            unit="%"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-white/70">DAO Treasury</label>
+                          <GlassmorphicSlider
+                            min={0}
+                            max={100}
+                            value={formData.tokenAllocation.treasury}
+                            onChange={(value) => setFormData({
+                              ...formData,
+                              tokenAllocation: {
+                                ...formData.tokenAllocation,
+                                treasury: value
+                              }
+                            })}
+                            unit="%"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 bg-white/5 rounded-lg">
+                    <p className="text-sm text-white/70">
+                      With dynamic supply, tokens will be minted for new contributions based on the reward rates below.
+                      This allows for unlimited growth but requires careful management of inflation.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <GlassmorphicInput
-              label="Token Supply"
-              name="tokenSupply"
-              type="number"
-              value={formData.tokenSupply.toString()}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  tokenSupply: parseInt(e.target.value) || 0,
-                })
-              }
+              label="GitHub Repository URL"
+              name="githubRepo"
+              value={formData.githubRepo}
+              onChange={handleChange}
+              placeholder="https://github.com/username/repo"
               required
             />
+
+            <div className="p-4 glass-card rounded-lg">
+              <h4 className="text-lg font-semibold text-white mb-4">Initial Token Distribution</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <GlassmorphicInput
+                  label="Tokens per Commit"
+                  name="initialDistribution.commits"
+                  type="number"
+                  value={formData.initialDistribution.commits}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    initialDistribution: {
+                      ...formData.initialDistribution,
+                      commits: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Tokens per PR"
+                  name="initialDistribution.pullRequests"
+                  type="number"
+                  value={formData.initialDistribution.pullRequests}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    initialDistribution: {
+                      ...formData.initialDistribution,
+                      pullRequests: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Tokens per Issue"
+                  name="initialDistribution.issues"
+                  type="number"
+                  value={formData.initialDistribution.issues}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    initialDistribution: {
+                      ...formData.initialDistribution,
+                      issues: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Tokens per Code Review"
+                  name="initialDistribution.codeReviews"
+                  type="number"
+                  value={formData.initialDistribution.codeReviews}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    initialDistribution: {
+                      ...formData.initialDistribution,
+                      codeReviews: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+              </div>
+            </div>
+
+            <div className="p-4 glass-card rounded-lg">
+              <h4 className="text-lg font-semibold text-white mb-4">Ongoing Contribution Rewards</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <GlassmorphicInput
+                  label="New PR Reward"
+                  name="contributionRewards.newPR"
+                  type="number"
+                  value={formData.contributionRewards.newPR}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    contributionRewards: {
+                      ...formData.contributionRewards,
+                      newPR: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Accepted PR Reward"
+                  name="contributionRewards.acceptedPR"
+                  type="number"
+                  value={formData.contributionRewards.acceptedPR}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    contributionRewards: {
+                      ...formData.contributionRewards,
+                      acceptedPR: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Issue Creation Reward"
+                  name="contributionRewards.issueCreation"
+                  type="number"
+                  value={formData.contributionRewards.issueCreation}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    contributionRewards: {
+                      ...formData.contributionRewards,
+                      issueCreation: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Code Review Reward"
+                  name="contributionRewards.codeReview"
+                  type="number"
+                  value={formData.contributionRewards.codeReview}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    contributionRewards: {
+                      ...formData.contributionRewards,
+                      codeReview: parseInt(e.target.value) || 0
+                    }
+                  })}
+                />
+              </div>
+            </div>
+
+            <div className="p-4 glass-card rounded-lg">
+              <h4 className="text-lg font-semibold text-white mb-4">Voting Parameters</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <GlassmorphicInput
+                  label="Vesting Period (days)"
+                  name="vestingPeriod"
+                  type="number"
+                  value={formData.vestingPeriod}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    vestingPeriod: parseInt(e.target.value) || 0
+                  })}
+                />
+                <GlassmorphicInput
+                  label="Minimum Tokens for Voting"
+                  name="minContributionForVoting"
+                  type="number"
+                  value={formData.minContributionForVoting}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    minContributionForVoting: parseInt(e.target.value) || 0
+                  })}
+                />
+              </div>
+            </div>
 
             <div className="p-4 glass-card rounded-lg mt-6">
               <p className="text-sm text-daoship-text-gray">
                 <span className="text-daoship-blue font-medium">Note:</span>{" "}
-                These tokens will be used for governance and will be distributed
-                to members according to your chosen allocation.
+                Tokens will be distributed based on GitHub contributions. New contributors will need to complete the vesting period before they can vote.
               </p>
             </div>
           </div>
