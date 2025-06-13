@@ -43,12 +43,12 @@ const Navigation = () => {
 
   // Determine if GitHub is connected
   const isGitHubConnected = !!user;
-  
+
   useEffect(() => {
     if (user) {
       // Set display name for UI
       setGithubUsername(user.displayName || user.email?.split('@')[0] || 'User');
-      
+
       // Extract actual GitHub username from providerData or additionalUserInfo
       // This depends on how your GitHub auth is set up
       const githubProvider = user.providerData?.find(provider => provider.providerId === 'github.com');
@@ -56,7 +56,7 @@ const Navigation = () => {
         // If the provider data contains the GitHub username
         setActualGitHubUsername(githubProvider.uid || githubProvider.displayName || '');
       }
-      
+
       // Fetch additional user data from Firestore if needed
       fetchUserProfile(user.uid);
     } else {
@@ -138,14 +138,14 @@ const Navigation = () => {
   const handleGitHubConnect = async () => {
     try {
       setGitHubLoading(true);
-      
+
       toast({
         title: "Connecting to GitHub",
         description: "Please complete the authentication process...",
       });
 
       const result = await connectGitHub();
-      
+
       if (result && result.success) {
         toast({
           title: "GitHub Connected",
@@ -165,13 +165,13 @@ const Navigation = () => {
       setGitHubLoading(false);
     }
   };
-  
+
   const handleGitHubDisconnect = async () => {
     try {
       setGitHubLoading(true);
       await disconnectGitHub();
       setIsGitHubMenuOpen(false);
-      
+
       toast({
         title: "GitHub Disconnected",
         description: "Successfully disconnected from GitHub",
@@ -241,15 +241,15 @@ const Navigation = () => {
   // Function to get the correct GitHub profile URL
   const getGitHubProfileUrl = () => {
     // Priority order: actualGitHubUsername > userProfile.githubUsername > fallback
-    const username = actualGitHubUsername || 
-                    userProfile?.githubUsername || 
+    const username = actualGitHubUsername ||
+                    userProfile?.githubUsername ||
                     userProfile?.actualGithubUsername;
-    
+
     if (!username) {
       console.warn('No GitHub username found for profile URL');
       return '#'; // Return # to prevent navigation
     }
-    
+
     return `https://github.com/${username}`;
   };
 

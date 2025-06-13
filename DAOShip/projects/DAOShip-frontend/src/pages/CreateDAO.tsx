@@ -182,7 +182,6 @@ const CreateDAO = () => {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Describe your DAO's purpose and goals..."
                 required
               />
 
@@ -200,7 +199,6 @@ const CreateDAO = () => {
                       <Upload className="h-8 w-8 text-white/50" />
                     )}
                   </div>
-
                   <div className="flex-1">
                     <input
                       type="file"
@@ -209,7 +207,7 @@ const CreateDAO = () => {
                       onChange={handleLogoUpload}
                       className="hidden"
                     />
-                    <label htmlFor="logo">
+                    <label htmlFor="logo" className="cursor-pointer w-full">
                       <GradientButton
                         type="button"
                         variant="secondary"

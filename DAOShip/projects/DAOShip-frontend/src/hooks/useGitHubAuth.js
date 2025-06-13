@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { 
-  signInWithPopup, 
-  signOut, 
+import {
+  signInWithPopup,
+  signOut,
   onAuthStateChanged,
   linkWithPopup,
   getAdditionalUserInfo
@@ -36,13 +36,18 @@ export const useGitHubAuth = () => {
       const credential = GithubAuthProvider.credentialFromResult(result);
       const accessToken = credential.accessToken;
 
+      // Extract GitHub username from provider data
+      const githubUsername = user.providerData[0]?.displayName ||
+                           additionalInfo?.username ||
+                           user.reloadUserInfo?.screenName;
+
       // Store user data in Firestore
       const userDoc = {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL,
-        githubUsername: user.reloadUserInfo?.screenName || user.providerData[0]?.uid, // Actual GitHub username,
+        githubUsername: githubUsername, // Store the extracted GitHub username
         githubAccessToken: accessToken, // Store securely - consider encryption
         githubProfile: additionalInfo.profile,
         createdAt: new Date(),
@@ -56,7 +61,7 @@ export const useGitHubAuth = () => {
     } catch (error) {
       console.error('GitHub connection error:', error);
       setError(error.message);
-      
+
       // Handle specific errors
       if (error.code === 'auth/account-exists-with-different-credential') {
         setError('Account exists with different credential. Please use your original sign-in method.');
@@ -65,7 +70,7 @@ export const useGitHubAuth = () => {
       } else if (error.code === 'auth/popup-blocked') {
         setError('Popup blocked. Please allow popups for this site.');
       }
-      
+
       return { success: false, error: error.message };
     } finally {
       setLoading(false);
