@@ -23,6 +23,8 @@ import GlassmorphicCard from "@/components/ui/glassmorphic-card";
 import GradientButton from "@/components/ui/gradient-button";
 import { getDAO, getDAOProposals } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { getAppClient } from "@/utils/GetAppClient";
+import { useWallet } from "@/hooks/use-wallet";
 
 interface Proposal {
   _id: string;
@@ -62,6 +64,55 @@ const DAODashboard = () => {
       fetchDAOData();
     }
   }, [id]);
+
+  // const callGetProposal = async (proposalId: string) => {
+  //   const { activeAddress, transactionSigner } = useWallet();
+  //   const appClient = await getAppClient('O3TYK47UWYDFNWSEXZU574UDTMS4VWIVP2BT6ZK3ECRXAXT4FERPGKFAY4', );
+  //   if (!appClient) {
+  //     // setLoading(false)
+  //     return false
+  //   }
+
+  //   // Get fresh suggested parameters right before transaction
+  //   const algosdk = (window as any).algosdk || (await import('algosdk'))
+  //   const algodClient = new algosdk.Algodv2('', 'https://testnet-api.algonode.cloud', '')
+  //   const suggestedParams = await algodClient.getTransactionParams().do()
+  //   console.log('Fresh suggested params:', suggestedParams)
+
+  //   // Optional: Reduce the validity window to avoid timing issues
+  //   suggestedParams.lastRound = suggestedParams.firstRound + 10
+
+  //   const assetIdA = BigInt(selectedToken1.id)
+  //   const assetIdB = BigInt(selectedToken2.id)
+  //   console.log('Selected tokens:', selectedToken1, selectedToken2)
+  //   console.log('Asset IDs - A:', assetIdA, 'B:', assetIdB)
+  //   console.log('Fresh suggested params:', suggestedParams)
+
+  //   const algoAmount = algo(0.01) // Minimum balance requirement for the pool
+  //   console.log('Minimum Algo amount required:', algoAmount)
+
+  //   const response = await appClient.send.createPool({
+  //     args: [assetIdA, assetIdB],
+  //     signer: transactionSigner,
+  //     extraFee: algoAmount,
+  //     sender: activeAddress,
+  //   })
+
+  //   if (response) {
+  //     enqueueSnackbar?.(`Pool created successfully!`, { variant: 'success' })
+  //     setPoolExists(true)
+  //     return true
+  //   }
+  //   return false
+  // } catch (error) {
+  //   console.error('Error creating pool:', error)
+  //   enqueueSnackbar?.(`Error creating pool: ${error instanceof Error ? error.message : 'Unknown error'}`, { variant: 'error' })
+  //   return false
+  // } finally {
+  //   setLoading(false)
+  // }
+  // }
+
 
   const fetchDAOData = async () => {
     try {

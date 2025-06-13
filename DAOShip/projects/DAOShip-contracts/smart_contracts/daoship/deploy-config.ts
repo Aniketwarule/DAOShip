@@ -1,26 +1,21 @@
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
-import { DaoshipFactory } from '../artifacts/daoship/DaoshipClient'
+import { YesNoRewardFactory } from '../artifacts/daoship/YesNoRewardClient'
 
 // Below is a showcase of various deployment options you can use in TypeScript Client
 export async function deploy() {
-  console.log('=== Deploying DAOShip DAO Contract ===')
+  console.log('=== Deploying YesNoReward DAO Contract ===')
 
   const algorand = AlgorandClient.fromEnvironment()
   const deployer = await algorand.account.fromEnvironment('DEPLOYER')
 
-  const factory = algorand.client.getTypedAppFactory(DaoshipFactory, {
+  const factory = algorand.client.getTypedAppFactory(YesNoRewardFactory, {
     defaultSender: deployer.addr,
   })
 
-  // Deploy the contract with initial parameters
+  // Deploy the contract
   const { appClient, result } = await factory.deploy({
     onUpdate: 'append',
-    onSchemaBreak: 'append',
-    // Initial global state values
-    minVotingPower: 1000000, // 1 ALGO worth of voting power
-    votingPeriod: 604800, // 7 days in seconds
-    proposalCount: 0,
-    proposalIds: []
+    onSchemaBreak: 'append'
   })
 
   // Fund the app account if it was just created
@@ -30,19 +25,14 @@ export async function deploy() {
       sender: deployer.addr,
       receiver: appClient.appAddress,
     })
+
+    // Initialize contract with anyone_can_create set to true
+    await appClient.createApplication({
+      anyone_can_create: true
+    })
   }
 
   console.log(
-    `Successfully deployed DAOShip DAO Contract at ${appClient.appClient.appId}`,
+    `Successfully deployed YesNoReward DAO Contract at ${appClient.appClient.appId}`,
   )
-
-  // Create a test proposal
-  try {
-    const proposalId = await appClient.send.createProposal({
-      args: { description: 'Test Proposal' },
-    })
-    console.log(`Created test proposal with ID: ${proposalId.return}`)
-  } catch (error) {
-    console.log('Could not create test proposal (expected if deployer has no voting power)')
-  }
 }
