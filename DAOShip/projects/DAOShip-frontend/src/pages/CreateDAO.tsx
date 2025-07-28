@@ -228,7 +228,7 @@ const CreateDAO = () => {
       // Use process.env.VITE_GITHUB_TOKEN or import.meta.env.VITE_GITHUB_TOKEN
       // assuming you have it set up in your build environment.
       // For this example, I'm keeping the placeholder as provided.
-      const GITHUB_TOKEN = "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"; // This token needs to be valid and stored securely
+      const GITHUB_TOKEN = "Add_YOUR_GITHUB_TOKEN_HERE"; // This token needs to be valid and stored securely
 
       if (!GITHUB_TOKEN) {
         throw new Error("GitHub API token is not configured. Please set VITE_GITHUB_TOKEN in your .env file.");
