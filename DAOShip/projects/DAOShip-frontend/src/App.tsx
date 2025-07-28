@@ -29,7 +29,6 @@ const App = () => (
             path="/dao/:daoId/proposal/:proposalId"
             element={<ProposalView />}
           />
-          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
