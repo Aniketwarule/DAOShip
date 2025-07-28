@@ -61,3 +61,6 @@ Algorand Smart Contracts (Governance Logic)
 Algorand Blockchain (Voting, Funds, History)
      ↘
   IPFS (Document Storage)
+
+
+Stay tuned for the updates
