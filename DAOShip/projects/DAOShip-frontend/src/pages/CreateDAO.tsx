@@ -158,11 +158,7 @@ const CreateDAO = () => {
         break;
 
       case 3: // Invite Collaborators (optional step, no required validation)
-        // If githubRepo is provided but no collaborators fetched or an error occurred,
-        // we might want to warn the user, but not prevent them from proceeding.
         if (formData.githubRepo && collaborators.length === 0 && !collaboratorsLoading && collaboratorsError) {
-          // This is more of a warning than an error that prevents progression
-          // errors.collaborators = collaboratorsError;
         }
         break;
 
