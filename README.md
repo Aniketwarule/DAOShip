@@ -64,4 +64,4 @@ Algorand Blockchain (Voting, Funds, History)
   IPFS (Document Storage)
 
 
-Stay tuned for the updates
+Stay tuned for future updates
