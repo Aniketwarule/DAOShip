@@ -7,6 +7,7 @@
 > **Launch your DAO in under 5 minutes — no coding required.**  
 > The first no-code DAO creation platform built on **Algorand**, empowering communities, startups, and organizations to govern transparently, securely, and at low cost.
 
+
 ---
 
 ## 🚀 Live Demo
@@ -63,4 +64,4 @@ Algorand Blockchain (Voting, Funds, History)
   IPFS (Document Storage)
 
 
-Stay tuned for the updates
+Stay tuned for future updates
