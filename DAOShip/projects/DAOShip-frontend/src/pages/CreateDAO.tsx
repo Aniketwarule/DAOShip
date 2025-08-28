@@ -158,11 +158,7 @@ const CreateDAO = () => {
         break;
 
       case 3: // Invite Collaborators (optional step, no required validation)
-        // If githubRepo is provided but no collaborators fetched or an error occurred,
-        // we might want to warn the user, but not prevent them from proceeding.
         if (formData.githubRepo && collaborators.length === 0 && !collaboratorsLoading && collaboratorsError) {
-          // This is more of a warning than an error that prevents progression
-          // errors.collaborators = collaboratorsError;
         }
         break;
 
@@ -222,12 +218,6 @@ const CreateDAO = () => {
     setCollaboratorsError(null);
 
     try {
-      // Replace 'YOUR_GITHUB_TOKEN' with your actual GitHub token
-      // In a real application, you would handle this securely, e.g., through a backend proxy
-      // or OAuth flow, not directly in the frontend like this.
-      // Use process.env.VITE_GITHUB_TOKEN or import.meta.env.VITE_GITHUB_TOKEN
-      // assuming you have it set up in your build environment.
-      // For this example, I'm keeping the placeholder as provided.
       const GITHUB_TOKEN = "Add_YOUR_GITHUB_TOKEN_HERE"; // This token needs to be valid and stored securely
 
       if (!GITHUB_TOKEN) {
