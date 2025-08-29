@@ -29,7 +29,7 @@
 
 ## 🧠 Why DAO Creator?
 
-| Pain Point                     | Our Solution                                   |
+| Pain Point                    | Our Solution                                   |
 |-------------------------------|------------------------------------------------|
 | Complex DAO creation          | Zero-code builder with visual interface        |
 | High dev costs ($50K–$200K)   | 99.5% cheaper setup via prebuilt contracts     |
