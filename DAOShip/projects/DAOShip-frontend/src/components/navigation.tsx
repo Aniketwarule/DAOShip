@@ -5,6 +5,7 @@ import GradientButton from "@/components/ui/gradient-button";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGitHubAuth } from '@/hooks/useGitHubAuth';
+import { useInvitations } from '@/hooks/useInvitations';
 import {
   Wallet,
   ChevronDown,
@@ -14,6 +15,7 @@ import {
   Sparkles,
   Github,
   ExternalLink,
+  Mail,
 } from "lucide-react";
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/hooks/firebase"; // Ensure this matches your Firebase configuration file path
