@@ -28,6 +28,13 @@ import {
 import { formatWalletAddress } from "@/lib/utils";
 
 const Navigation = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const { toast } = useToast();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +70,7 @@ const Navigation = () => {
 //     setActualGitHubUsername(data.login); // this is the actual GitHub username
 //   }
 // });
-  
+
   useEffect(() => {
     if (user) {
       // Set display name for UI
@@ -176,7 +183,7 @@ const Navigation = () => {
       }
     } catch (error) {
       console.error('GitHub connection failed:', error);
-      
+
     } finally {
       setGitHubLoading(false);
     }
