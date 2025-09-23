@@ -42,7 +42,7 @@ const InvitationCard = ({ invitation, onAccept, onDecline, isLoading = false }) 
   };
 
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-4 hover:border-gray-600 transition-colors">
+  <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-4 hover:border-gray-600 transition-colors">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
@@ -66,7 +66,7 @@ const InvitationCard = ({ invitation, onAccept, onDecline, isLoading = false }) 
         <div>
           <p className="text-sm text-gray-400 mb-1">Token</p>
           <p className="text-white font-medium">
-            {dao?.tokenName} ({dao?.tokenSymbol})
+            {dao?.tokenName && dao?.tokenSymbol ? `${dao.tokenName} (${dao.tokenSymbol})` : 'N/A'}
           </p>
         </div>
         <div>
