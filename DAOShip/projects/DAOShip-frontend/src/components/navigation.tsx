@@ -55,22 +55,6 @@ const Navigation = () => {
   // Determine if GitHub is connected
   const isGitHubConnected = !!user;
 
-//   const provider = new GithubAuthProvider();
-//   signInWithPopup(auth, provider).then(async (result) => {
-//   const credential = GithubAuthProvider.credentialFromResult(result);
-//   const token = credential?.accessToken;
-
-//   if (token) {
-//     const response = await fetch('https://api.github.com/user', {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//     const data = await response.json();
-//     setActualGitHubUsername(data.login); // this is the actual GitHub username
-//   }
-// });
-
   useEffect(() => {
     if (user) {
       // Set display name for UI
