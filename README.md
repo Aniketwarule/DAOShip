@@ -57,7 +57,7 @@ User Interface (React)
      ↓
 Node.js Backend (API & DAO Manager)
      ↓
-Algorand Smart Contracts (Governance Logic)
+Algorand Smart Contracts (Governance Logic) 
      ↓
 Algorand Blockchain (Voting, Funds, History)
      ↘
