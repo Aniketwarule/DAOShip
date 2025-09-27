@@ -57,11 +57,11 @@ User Interface (React)
      ↓
 Node.js Backend (API & DAO Manager)
      ↓
-Algorand Smart Contracts (Governance Logic)
+Algorand Smart Contracts (Governance Logic) 
      ↓
 Algorand Blockchain (Voting, Funds, History)
      ↘
-  IPFS (Document Storage))
+  IPFS (Document Storage)) 
 
 
 Stay tuned for future updates
